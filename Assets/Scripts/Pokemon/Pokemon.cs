@@ -23,7 +23,7 @@ public class Pokemon
     public List<Move> Moves { get; set; }
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
-
+    public Condition Status { get; private set; }
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
 
     //this definition changed as we dont need it as we wont use intsructor if calling from inspector
@@ -203,6 +203,13 @@ public int Attack
         }
 
         return damageDetails;
+    }
+
+    public void SetStatus(ConditionID conditionID)
+    {
+        Status = ConditionsDB.Conditions[conditionID];
+
+        StatusChanges.Enqueue($"{BaseStats.PokeName} {Status.StartMessage}");
     }
 
     public Move GetRandomMove()

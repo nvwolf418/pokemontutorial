@@ -575,8 +575,8 @@ MonoBehaviour:
     level: 13
   - _base: {fileID: 11400000, guid: 0f0e45a486781224a8d62c953ec0bcdf, type: 2}
     level: 10
-  - _base: {fileID: 11400000, guid: d4f59f1d2f75425459763e93f6a121f6, type: 2}
-    level: 3
+  - _base: {fileID: 11400000, guid: e03d02c762773a243a001d6567597973, type: 2}
+    level: 110
 --- !u!1 &336221778
 GameObject:
   m_ObjectHideFlags: 0
@@ -723,11 +723,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 35
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
-    m_MaxSize: 40
+    m_MinSize: 0
+    m_MaxSize: 278
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -10345,11 +10345,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 35
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
-    m_MaxSize: 40
+    m_MinSize: 0
+    m_MaxSize: 278
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -10424,11 +10424,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 35
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
-    m_MaxSize: 40
+    m_MinSize: 0
+    m_MaxSize: 278
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -10503,11 +10503,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 35
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
-    m_MaxSize: 40
+    m_MinSize: 0
+    m_MaxSize: 278
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1

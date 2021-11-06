@@ -131,11 +131,12 @@ public class BattleSystem : MonoBehaviour
 
         targetUnit.PlayHitAnimation();
 
-        
 
-        if(move.Base.Category == MoveCategory.Status)
+        Debug.Log($"Above {move.Base.Category} == {MoveCategory.Status}");
+        if (move.Base.Category == MoveCategory.Status)
         {
-            RunMoveEffects(move, sourceUnit.Pokemon, targetUnit.Pokemon);
+            Debug.Log($"We are in {move.Base.Category} == {MoveCategory.Status}");
+            yield return RunMoveEffects(move, sourceUnit.Pokemon, targetUnit.Pokemon);
         }
         else
         {
@@ -159,6 +160,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator RunMoveEffects(Move move, Pokemon source, Pokemon target)
     {
+        Debug.Log("RUNMOVEEFFECTS");
         var effects = move.Base.Effects;
         if (effects.Boosts != null)
         {
@@ -170,6 +172,12 @@ public class BattleSystem : MonoBehaviour
             {
                 target.ApplyBoosts(effects.Boosts);
             }
+        }
+
+        //status condition
+        if(effects.Status != ConditionID.none)
+        {
+            target.SetStatus(effects.Status);
         }
 
         yield return ShowStatusChanges(source);
@@ -255,7 +263,7 @@ public class BattleSystem : MonoBehaviour
         {
             currentAction -= 2;
         }
-        Debug.Log("current action: " + currentAction);
+
         currentAction = Mathf.Clamp(currentAction, 0, 3);
 
         dialogBox.UpdateActionSelection(currentAction);
@@ -301,7 +309,7 @@ public class BattleSystem : MonoBehaviour
         {
             currentMove -= 2;
         }
-        Debug.Log("current move; " + currentMove);
+
         currentMove = Mathf.Clamp(currentMove, 0, playerUnit.Pokemon.Moves.Count - 1);
 
         dialogBox.UpdateMoveSelection(currentMove, playerUnit.Pokemon.Moves[currentMove]);
@@ -339,7 +347,7 @@ public class BattleSystem : MonoBehaviour
         {
             currentMember -= 2;
         }
-        Debug.Log("current move; " + currentMember);
+
         currentMember = Mathf.Clamp(currentMember, 0, playerParty.Pokemons.Count - 1);
 
         partyScreen.UpdateMemberSelection(currentMember);
