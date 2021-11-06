@@ -47,7 +47,19 @@ public class BattleSystem : MonoBehaviour
         //https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated
         yield return (dialogBox.TypeDialog($"A wild {enemyUnit.Pokemon.BaseStats.PokeName} appeared!"));
 
-        ActionSelection();
+        ChooseFirstTurn();
+    }
+
+    void ChooseFirstTurn()
+    {
+        if(playerUnit.Pokemon.Speed >= enemyUnit.Pokemon.Speed)
+        {
+            ActionSelection();
+        }
+        else
+        {
+            StartCoroutine(EnemyMove());
+        }
     }
 
     void BattleOver(bool won)
@@ -119,24 +131,11 @@ public class BattleSystem : MonoBehaviour
 
         targetUnit.PlayHitAnimation();
 
-        var effects = move.Base.Effects;
+        
 
         if(move.Base.Category == MoveCategory.Status)
         {
-            if(effects.Boosts != null)
-            {
-                if(move.Base.Target == MoveTarget.Self)
-                {
-                    sourceUnit.Pokemon.ApplyBoosts(effects.Boosts);
-                }
-                else
-                {
-                    targetUnit.Pokemon.ApplyBoosts(effects.Boosts);
-                }
-            }
-
-            yield return ShowStatusChanges(sourceUnit.Pokemon);
-            yield return ShowStatusChanges(targetUnit.Pokemon);
+            RunMoveEffects(move, sourceUnit.Pokemon, targetUnit.Pokemon);
         }
         else
         {
@@ -158,6 +157,24 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    IEnumerator RunMoveEffects(Move move, Pokemon source, Pokemon target)
+    {
+        var effects = move.Base.Effects;
+        if (effects.Boosts != null)
+        {
+            if (move.Base.Target == MoveTarget.Self)
+            {
+                source.ApplyBoosts(effects.Boosts);
+            }
+            else
+            {
+                target.ApplyBoosts(effects.Boosts);
+            }
+        }
+
+        yield return ShowStatusChanges(source);
+        yield return ShowStatusChanges(target);
+    }
 
     IEnumerator ShowStatusChanges(Pokemon pokemon)
     {
@@ -361,8 +378,11 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator SwitchPokemon(Pokemon newPokemon)
     {
+        bool currentPokemonFainted = true;
+
         if(playerUnit.Pokemon.HP > 0)
         {
+            currentPokemonFainted = false;
             yield return dialogBox.TypeDialog($"Come back {playerUnit.Pokemon.BaseStats.PokeName}");
             playerUnit.PlayFaintAnimation();
             yield return new WaitForSeconds(2f);
@@ -377,6 +397,14 @@ public class BattleSystem : MonoBehaviour
         //https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated
         yield return (dialogBox.TypeDialog($"Go {newPokemon.BaseStats.PokeName}!"));
 
-        StartCoroutine(EnemyMove());
+
+        if(currentPokemonFainted)
+        {
+            ChooseFirstTurn();
+        }
+        else
+        {
+            StartCoroutine(EnemyMove());
+        }
     }
 }
