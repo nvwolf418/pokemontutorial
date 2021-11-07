@@ -15,10 +15,11 @@ MonoBehaviour:
   moveName: Ember
   description: Small fireball spit, patooey and burn!
   type: 2
-  power: 40
+  power: 15
   accuracy: 100
   pp: 25
-  category: 1
+  category: 2
   effects:
     boosts: []
+    status: 2
   target: 0

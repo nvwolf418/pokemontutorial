@@ -25,6 +25,7 @@ public class Pokemon
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public Condition Status { get; private set; }
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
+    public bool HpChanged { get; set; }
 
     //this definition changed as we dont need it as we wont use intsructor if calling from inspector
     //public Pokemon(PokemonBase baseStats, int level)
@@ -194,15 +195,17 @@ public int Attack
         float d = a * move.Base.Power * ((float) attack / defense)  + 2;
         int damage = Mathf.FloorToInt(d * modifiers);
 
-        HP -= damage;
-
-        if(HP <= 0)
-        {
-            HP = 0;
-            damageDetails.Fainted = true;
-        }
+        UpdateHP(damage);
+       
 
         return damageDetails;
+    }
+
+    public void UpdateHP(int dmg)
+    {
+
+        HP = Mathf.Clamp(HP - dmg, 0, MaxHp);
+        HpChanged = true;
     }
 
     public void SetStatus(ConditionID conditionID)
@@ -218,10 +221,17 @@ public int Attack
         return Moves[r];
     }
 
+    public void OnAfterTurn()
+    {
+        Status?.OnAfterTurn?.Invoke(this);
+    }
+
     public void OnBattleOver()
     {
         ResetStatBoosts();
     }
+
+
 }
 
 public class DamageDetails

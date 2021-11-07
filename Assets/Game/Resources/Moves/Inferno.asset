@@ -15,6 +15,11 @@ MonoBehaviour:
   moveName: Inferno
   description: Hellfire rains on the enemy
   type: 2
-  power: 355
+  power: 100
   accuracy: 100
   pp: 5
+  category: 2
+  effects:
+    boosts: []
+    status: 2
+  target: 0
