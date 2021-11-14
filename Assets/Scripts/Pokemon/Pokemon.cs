@@ -29,6 +29,8 @@ public class Pokemon
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
     public bool HpChanged { get; set; }
 
+    public event System.Action OnStatusChanged;
+
     //this definition changed as we dont need it as we wont use intsructor if calling from inspector
     //public Pokemon(PokemonBase baseStats, int level)
     public void Init()
@@ -71,7 +73,7 @@ public class Pokemon
         Stats.Add(Stat.SpDefense, Mathf.FloorToInt((BaseStats.SpDefense * Level) / 100f) + 5);
         Stats.Add(Stat.Speed, Mathf.FloorToInt((BaseStats.Speed * Level) / 100f) + 5);
 
-        MaxHp = Mathf.FloorToInt((BaseStats.MaxHp * Level) / 100f) + 10;
+        MaxHp = Mathf.FloorToInt((BaseStats.MaxHp * Level) / 100f) + 10 + Level;
     }
 
 
@@ -212,14 +214,22 @@ public int Attack
 
     public void SetStatus(ConditionID conditionID)
     {
+        if (Status != null)
+        {
+            return;
+        }
+            
+
         Status = ConditionsDB.Conditions[conditionID];
         Status?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{BaseStats.PokeName} {Status.StartMessage}");
+        OnStatusChanged?.Invoke();
     }
 
     public void CureStatus()
     {
         Status = null;
+        OnStatusChanged?.Invoke();
     }
 
 
