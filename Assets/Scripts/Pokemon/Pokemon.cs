@@ -24,6 +24,8 @@ public class Pokemon
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public Condition Status { get; private set; }
+    public int StatusTime { get; set; }
+
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
     public bool HpChanged { get; set; }
 
@@ -211,9 +213,15 @@ public int Attack
     public void SetStatus(ConditionID conditionID)
     {
         Status = ConditionsDB.Conditions[conditionID];
-
+        Status?.OnStart?.Invoke(this);
         StatusChanges.Enqueue($"{BaseStats.PokeName} {Status.StartMessage}");
     }
+
+    public void CureStatus()
+    {
+        Status = null;
+    }
+
 
     public Move GetRandomMove()
     {
@@ -226,6 +234,15 @@ public int Attack
         Status?.OnAfterTurn?.Invoke(this);
     }
 
+    public bool OnBeforeMove()
+    {
+        if(Status?.OnBeforeMove != null)
+        {
+            return Status.OnBeforeMove(this);
+        }
+
+        return true;
+    }
     public void OnBattleOver()
     {
         ResetStatBoosts();

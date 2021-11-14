@@ -567,14 +567,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pokemons:
-  - _base: {fileID: 11400000, guid: fc26038096e7556448d966d410778b70, type: 2}
-    level: 7
+  - _base: {fileID: 11400000, guid: 159e457e1c0d8a0458ea6d6664b72ba7, type: 2}
+    level: 11
   - _base: {fileID: 11400000, guid: 0f0e45a486781224a8d62c953ec0bcdf, type: 2}
     level: 25
   - _base: {fileID: 11400000, guid: d4f59f1d2f75425459763e93f6a121f6, type: 2}
     level: 13
   - _base: {fileID: 11400000, guid: 0f0e45a486781224a8d62c953ec0bcdf, type: 2}
     level: 10
+  - _base: {fileID: 11400000, guid: e03d02c762773a243a001d6567597973, type: 2}
+    level: 11
   - _base: {fileID: 11400000, guid: e03d02c762773a243a001d6567597973, type: 2}
     level: 11
 --- !u!1 &336221778
