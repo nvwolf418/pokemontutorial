@@ -25,6 +25,8 @@ public class Pokemon
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public Condition Status { get; private set; }
     public int StatusTime { get; set; }
+    public Condition VolatileStatus { get; private set; }
+    public int VolatileStatusTime { get; set; }
 
     public Queue<string> StatusChanges { get; private set; } = new Queue<string>();
     public bool HpChanged { get; set; }
@@ -233,6 +235,29 @@ public int Attack
     }
 
 
+
+    public void SetVolatileStatus(ConditionID conditionID)
+    {
+        if (VolatileStatus != null)
+        {
+            return;
+        }
+
+
+        VolatileStatus = ConditionsDB.Conditions[conditionID];
+        VolatileStatus?.OnStart?.Invoke(this);
+        StatusChanges.Enqueue($"{BaseStats.PokeName} {VolatileStatus.StartMessage}");
+        //dont need this as it doesn't need to be changed in the hud
+        //OnStatusChanged?.Invoke();
+    }
+
+    public void CureVolatileStatus()
+    {
+        VolatileStatus = null;
+        OnStatusChanged?.Invoke();
+    }
+
+
     public Move GetRandomMove()
     {
         int r = Random.Range(0, Moves.Count);
@@ -242,19 +267,33 @@ public int Attack
     public void OnAfterTurn()
     {
         Status?.OnAfterTurn?.Invoke(this);
+        VolatileStatus?.OnAfterTurn?.Invoke(this);
     }
 
     public bool OnBeforeMove()
     {
+        bool canPerformMove = true;
         if(Status?.OnBeforeMove != null)
         {
-            return Status.OnBeforeMove(this);
+            if(Status.OnBeforeMove(this))
+            {
+                canPerformMove = false;
+            }
         }
 
-        return true;
+        if (VolatileStatus?.OnBeforeMove != null)
+        {
+            if (VolatileStatus.OnBeforeMove(this))
+            {
+                canPerformMove = false;
+            }
+        }
+
+        return canPerformMove;
     }
     public void OnBattleOver()
     {
+        VolatileStatus = null;
         ResetStatBoosts();
     }
 
